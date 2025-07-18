@@ -9,3 +9,12 @@
 - What are dependenices
 - Whst is use of "-g" while npm install nodemon
 - Difference between caret and tilde ( ^ vs ~ )
+
+- Initialize git
+- .gitignore
+- Create a remote repo on github
+- Push all code to remore origin
+- Play with routes and route extensions ex. /test , /hello
+- Order of the routes matter a lot
+- Install Postman app make a woekspace/collection > test API call
+- Write logic to handle GET, POST, PATCH, DELETE API call and test them postman
