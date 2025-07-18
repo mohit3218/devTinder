@@ -10,11 +10,11 @@ app.post('/user', (req, res) => {
     res.send("User data has been saved successfully!!");
 })
 
-app.put('/user/1' , (req, res) => {
+app.put('/user/:userId' , (req, res) => {
     res.send("User data has been updated successfully!!");
 })
 
-app.delete('/user/2', (req, res) => {
+app.delete('/user/:userId', (req, res) => {
     res.send("User has been deleted successfully!!")
 })
 
