@@ -4,16 +4,41 @@ const port = 8000;
 
 const { connectDB } = require("./config/database");
 const User = require("./models/user");
+const { validateSignUpData } = require("./utils/validations");
+const bcrypt = require("bcrypt");
 
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-  //Creating a new instance of the User model
   const data = req.body;
-  if (data?.skills?.length > 15) {
-    throw new Error("Skills not allowed more the 15");
-  }
-  const user = new User(data);
+  // Validation of data
+  validateSignUpData(data);
+  // Encrypt the password
+  const {
+    firstName,
+    lastName,
+    emailId,
+    password,
+    age,
+    gender,
+    about,
+    skills,
+    photoUrl,
+  } = data;
+  const passwordHash = await bcrypt.hash(password, 10);
+  //Creating a new instance of the User model
+
+  const user = new User({
+    firstName,
+    lastName,
+    emailId,
+    password: passwordHash,
+    age,
+    gender,
+    about,
+    skills,
+    photoUrl,
+  });
   try {
     await user.save();
     res.send("User added successfully");
