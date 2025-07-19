@@ -12,7 +12,6 @@ const validateSignUpData = (req) => {
     photoUrl,
   } = req;
 
-  console.log(firstName + " - " + firstName);
   if(!firstName || !lastName){
     throw new Error("Name is not valid");
   }else if(!validator.isEmail(emailId)){
