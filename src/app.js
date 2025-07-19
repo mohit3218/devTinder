@@ -9,7 +9,11 @@ app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   //Creating a new instance of the User model
-  const user = new User(req.body);
+  const data = req.body;
+  if (data?.skills?.length > 15) {
+    throw new Error("Skills not allowed more the 15");
+  }
+  const user = new User(data);
   try {
     await user.save();
     res.send("User added successfully");
@@ -59,19 +63,34 @@ app.delete("/user", async (req, res) => {
 });
 
 // Update data of teh user
-app.patch("/user", async (req, res) => {
-    const userId = req.body.userId;
-    const data = req.body;
-    try {
-        const user = await User.findByIdAndUpdate({_id: userId}, data, {
-            returnDocument: "after",
-            runValidators: true
-        });
-        res.send("Users deleted successfully");
-      } catch (err) {
-        res.status(400).send(`Something went wrong ${err}`);
-      }
-})
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params?.userId;
+  const data = req.body;
+
+  try {
+    const ALLOWED_UPDATES = ["photoUrl", "about", "gender", "skills"];
+
+    const isUpdateAllowed = Object.keys(data).every((k) =>
+      ALLOWED_UPDATES.includes(k)
+    );
+
+    if (!isUpdateAllowed) {
+      throw new Error("Update not allowed");
+    }
+
+    if (data?.skills.length) {
+      throw new Error("Skills not allowed more the 15");
+    }
+
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+    res.send("Users deleted successfully");
+  } catch (err) {
+    res.status(400).send(`Something went wrong ${err}`);
+  }
+});
 
 connectDB()
   .then(() => {
