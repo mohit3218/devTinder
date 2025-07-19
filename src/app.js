@@ -1,34 +1,36 @@
-const express = require('express')
-const app = express()
-const port = 8000
+const express = require("express");
+const app = express();
+const port = 8000;
 
-const { adminAuth } = require("./middlewares/auth")
+const { connectDB } = require("./config/database");
+const User = require("./models/user")
 
-
-//app.use("/admin", adminAuth); //To Make all Admin Route authorized
-
-app.get('/user', (req, res, next) => {
-  res.send({"firstName" : "Mohit", "lastName": "Thakur", "city": "ludhiana"});
-})
-
-app.post('/admin/user', (req, res, next) => {
-    res.send("User data has been saved successfully!!");
-})
-
-app.put('/admin/user/:userId' , (req, res, next) => {
-    res.send("User data has been updated successfully!!");
-})
-
-app.delete('/admin/user/:userId', (req, res, next) => {
-    res.send("User has been deleted successfully!!")
-})
-
-app.use("/", (err, req, res, next) => {
-    if(err){
-        res.status(500).send("Something went wrong");
+app.post("/signup" , async (req, res) => {
+    //Creating a new instance of the User model
+    const user = new  ({
+        firstName: "Mohit",
+        lastName: "Thakur",
+        emailId: "mohit@gmail.com",
+        password: "mohit@123"
+    })
+    try{
+        await user.save();
+        res.send("User added successfully")
+    }catch(err){
+        res.status(400).send(`Something went wrong ${err?.code}`)
     }
+    
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+connectDB()
+  .then(() => {
+    console.log("Database connection established!!");
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Database cannot be connected!!");
+  });
+
+  
