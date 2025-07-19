@@ -2,24 +2,31 @@ const express = require('express')
 const app = express()
 const port = 8000
 
-app.get('/user', (req, res) => {
+const { adminAuth } = require("./middlewares/auth")
+
+
+//app.use("/admin", adminAuth); //To Make all Admin Route authorized
+
+app.get('/user', (req, res, next) => {
   res.send({"firstName" : "Mohit", "lastName": "Thakur", "city": "ludhiana"});
 })
 
-app.post('/user', (req, res) => {
+app.post('/admin/user', (req, res, next) => {
     res.send("User data has been saved successfully!!");
 })
 
-app.put('/user/:userId' , (req, res) => {
+app.put('/admin/user/:userId' , (req, res, next) => {
     res.send("User data has been updated successfully!!");
 })
 
-app.delete('/user/:userId', (req, res) => {
+app.delete('/admin/user/:userId', (req, res, next) => {
     res.send("User has been deleted successfully!!")
 })
 
-app.use("/test", (req, res) => {
-    res.send('Hello from the server!')
+app.use("/", (err, req, res, next) => {
+    if(err){
+        res.status(500).send("Something went wrong");
+    }
 })
 
 app.listen(port, () => {
