@@ -7,7 +7,7 @@ const User = require("./models/user");
 const { validateSignUpData } = require("./utils/validations");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
+
 const { userAuth } = require("./middlewares/auth");
 
 app.use(express.json());
@@ -63,9 +63,11 @@ app.post("/login", async (req, res) => {
 
     if (isPasswordValid) {
       //Create a JWT Token
-      const token = await User.getJWT();
+      const token = await user.getJWT();
+
+      console.log("token ",token);
       // Add the token to cookie and send the response back to user
-      res.cookie("token", token, { expires: new Date(Date.now(+8 * 3600000)) });
+      res.cookie("token", token, { expires: new Date(Date.now() + 8 * 3600000) });
 
       res.send("Login Successful!!!");
     } else {
@@ -90,7 +92,7 @@ app.post("/sendConnectionRequest", userAuth, async (req, res) => {
   //Sending a connection request
   console.log("Sending a connection request");
 
-  res.send(user.firstName + "sent the connection request!");
+  res.send(user.firstName + " sent the connection request!");
 });
 
 //Get User By E-mail
