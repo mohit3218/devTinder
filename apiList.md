@@ -22,5 +22,5 @@
 - GET /user/feed - Get you the profiles of other users on platform
 
 
-## Status: ignore, intersted, accepetes, rejected ##
+## Status: ignore, interested, accepeted, rejected ##
 
