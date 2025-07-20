@@ -56,8 +56,6 @@ authRouter.post("/login", async (req, res) => {
     if (isPasswordValid) {
       //Create a JWT Token
       const token = await user.getJWT();
-
-      console.log("token ", token);
       // Add the token to cookie and send the response back to user
       res.cookie("token", token, {
         expires: new Date(Date.now() + 8 * 3600000),
@@ -67,6 +65,17 @@ authRouter.post("/login", async (req, res) => {
     } else {
       throw new Error("Invalid credentials");
     }
+  } catch (err) {
+    res.status(400).send(`Something went wrong ${err}`);
+  }
+});
+
+authRouter.post("/logout", async (req, res) => {
+  try {
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+    });
+    res.send("Logout successfully!!");
   } catch (err) {
     res.status(400).send(`Something went wrong ${err}`);
   }
