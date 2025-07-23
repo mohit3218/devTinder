@@ -49,7 +49,8 @@ authRouter.post("/login", async (req, res) => {
     const user = await User.findOne({ emailId: emailId });
 
     if (!user) {
-      throw new Error("Invalid credentials");
+      //throw new Error("Invalid credentials");
+      res.json({result: false,message: `Invalid credentials`, data: []});
     }
     const isPasswordValid = await user.validatePassword(password);
 
@@ -60,13 +61,15 @@ authRouter.post("/login", async (req, res) => {
       res.cookie("token", token, {
         expires: new Date(Date.now() + 8 * 3600000),
       });
-
-      res.send("Login Successful!!!");
+      res.json({result: true,message: "Login Successfully!!", data: user});
+      //res.send(user);
     } else {
-      throw new Error("Invalid credentials");
+      //throw new Error("Invalid credentials");
+      res.json({result: false,message: "Invalid credentials!!", data: []});
     }
   } catch (err) {
-    res.status(400).send(`Something went wrong ${err}`);
+    //res.status(400).send(`Something went wrong ${err}`);
+    res.json({result: false,message: `Something went wrong ${err}`, data: []});
   }
 });
 
