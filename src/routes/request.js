@@ -75,7 +75,7 @@ requestRouter.post(
       }
       //console.log("Id : ", requestId, " | toUserId : ", loggedInUser._id)
       const connectionRequest = await ConnectionRequest.findOne({
-        fromUserId: requestId,
+        _id: requestId,
         toUserId: loggedInUser._id,
         status: "interested"
       })
