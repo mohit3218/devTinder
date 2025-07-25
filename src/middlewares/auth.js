@@ -10,7 +10,8 @@ const userAuth = async (req, res, next) => {
       //throw new Error("Invalid token");
       return res.status(401).send("Please login!");
     }
-    const decodedObj = await jwt.verify(token, "Dev@Tinder#790");
+    console.log(process.env.JWT_SECERT);
+    const decodedObj = await jwt.verify(token, process.env.JWT_SECERT);
     const { _id } = decodedObj;
 
     const user = await User.findById(_id);

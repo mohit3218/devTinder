@@ -1,10 +1,10 @@
 const express = require("express");
+require('dotenv').config();
 const { connectDB } = require("./config/database");
 const app = express();
 const cookieParser = require("cookie-parser");
 var cors = require('cors');
-const port = 8000;
-
+const port = process.env.PORT;
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true,
@@ -31,5 +31,5 @@ connectDB()
     });
   })
   .catch((err) => {
-    console.log("Database cannot be connected!!");
+    console.log("Database cannot be connected!!" , err);
   });
