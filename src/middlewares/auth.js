@@ -10,7 +10,7 @@ const userAuth = async (req, res, next) => {
       //throw new Error("Invalid token");
       return res.status(401).send("Please login!");
     }
-    console.log(process.env.JWT_SECERT);
+
     const decodedObj = await jwt.verify(token, process.env.JWT_SECERT);
     const { _id } = decodedObj;
 

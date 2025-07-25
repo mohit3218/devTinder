@@ -5,6 +5,8 @@ const { ConnectionRequest } = require("../models/connectionRequest");
 
 const requestRouter = express.Router();
 
+const sendEmail = require("../utils/sendEmail");
+
 requestRouter.post(
   "/request/send/:status/:toUserId",
   userAuth,
@@ -47,6 +49,11 @@ requestRouter.post(
         status,
       });
       const data = await connectionRequest.save();
+
+      //Commented due to no configured email varification on E-Mail
+      //const emailRes = await sendEMail.run();
+
+      
       res.json({
         message:
           req.user.firstName + " is" + " interested in" + toUser.firstName,
