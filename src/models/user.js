@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     membershipType:{
-      type:string
+      type:String
     },
     about: {
       type: String,
